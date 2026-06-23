@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { loadConfig } from "./config.js";
+import { TaigaClient } from "./client.js";
+import { projectsTools } from "./tools/projects.js";
+import { issuesTools } from "./tools/issues.js";
+import { userstoriesTools } from "./tools/userstories.js";
+import { tasksTools } from "./tools/tasks.js";
+import { milestonesTools } from "./tools/milestones.js";
+
+const config = loadConfig();
+const client = new TaigaClient(config);
+
+const server = new McpServer({
+  name: "taiga-mcp",
+  version: "0.1.0",
+});
+
+const allTools = [
+  ...projectsTools(client),
+  ...issuesTools(client),
+  ...userstoriesTools(client),
+  ...tasksTools(client),
+  ...milestonesTools(client),
+];
+
+for (const tool of allTools) {
+  const { name, description, inputSchema, handler } = tool;
+  server.tool(
+    name,
+    description,
+    inputSchema.shape,
+    async (args: Record<string, unknown>) => {
+      const result = await (handler as (a: Record<string, unknown>) => Promise<unknown>)(args);
+      return {
+        content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
+      };
+    },
+  );
+}
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
