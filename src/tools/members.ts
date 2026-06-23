@@ -27,9 +27,8 @@ export const membersTools = (client: TaigaClient) => [
       const memberships = await client.get<TaigaMembership[]>(`/memberships?project=${project_id}`);
       return memberships.map((m) => ({
         user_id: m.user,
-        username: m.user_extra_info?.username,
-        full_name: m.user_extra_info?.full_name,
-        email: m.user_extra_info?.email,
+        full_name: m.full_name,
+        email: m.email,
         role: m.role_name,
         is_active: m.is_user_active,
       }));
@@ -47,11 +46,8 @@ interface TaigaUser {
 
 interface TaigaMembership {
   user: number;
+  full_name: string;
+  email: string;
   role_name: string;
   is_user_active: boolean;
-  user_extra_info?: {
-    username: string;
-    full_name: string;
-    email: string;
-  };
 }

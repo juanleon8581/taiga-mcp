@@ -31,6 +31,12 @@ export const searchTools = (client: TaigaClient) => [
           subject: i.subject,
           type: "task",
         })),
+        epics: (result.epics ?? []).map((i) => ({
+          id: i.id,
+          ref: i.ref,
+          subject: i.subject,
+          type: "epic",
+        })),
         wikipages: (result.wikipages ?? []).map((p) => ({
           id: p.id,
           slug: p.slug,
@@ -40,6 +46,7 @@ export const searchTools = (client: TaigaClient) => [
           userstories: result.userstories?.length ?? 0,
           issues: result.issues?.length ?? 0,
           tasks: result.tasks?.length ?? 0,
+          epics: result.epics?.length ?? 0,
           wikipages: result.wikipages?.length ?? 0,
         },
       };
@@ -62,5 +69,6 @@ interface TaigaSearchResult {
   userstories?: SearchItem[];
   issues?: SearchItem[];
   tasks?: SearchItem[];
+  epics?: SearchItem[];
   wikipages?: WikiPage[];
 }

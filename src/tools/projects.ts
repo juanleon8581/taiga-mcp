@@ -7,7 +7,7 @@ export const projectsTools = (client: TaigaClient) => [
     description: "List all Taiga projects the authenticated user has access to",
     inputSchema: z.object({}),
     handler: async () => {
-      const projects = await client.get<TaigaProject[]>("/projects?member=me&order_by=user_order");
+      const projects = await client.get<TaigaProject[]>("/projects?order_by=user_order");
       return projects.map((p) => ({
         id: p.id,
         slug: p.slug,
