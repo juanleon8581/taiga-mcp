@@ -8,6 +8,8 @@ import { issuesTools } from "./tools/issues.js";
 import { userstoriesTools } from "./tools/userstories.js";
 import { tasksTools } from "./tools/tasks.js";
 import { milestonesTools } from "./tools/milestones.js";
+import { membersTools } from "./tools/members.js";
+import { lookupsTools } from "./tools/lookups.js";
 
 const config = loadConfig();
 const client = new TaigaClient(config);
@@ -23,6 +25,8 @@ const allTools = [
   ...userstoriesTools(client),
   ...tasksTools(client),
   ...milestonesTools(client),
+  ...membersTools(client),
+  ...lookupsTools(client),
 ];
 
 for (const tool of allTools) {
