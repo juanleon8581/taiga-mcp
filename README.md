@@ -79,6 +79,8 @@ On startup the server logs in with your credentials and stores the JWT access to
 |---|---|
 | `list_projects` | List all accessible projects |
 | `get_project` | Get project details by ID or slug |
+| `create_project` | Create a new project |
+| `update_project` | Update project settings (name, description, visibility, etc.) |
 
 ### Issues
 | Tool | Description |
@@ -109,6 +111,8 @@ On startup the server logs in with your credentials and stores the JWT access to
 |---|---|
 | `list_milestones` | List sprints |
 | `get_milestone` | Get sprint details |
+| `create_milestone` | Create a new sprint/milestone |
+| `update_milestone` | Update sprint name, dates, or close it |
 | `get_milestone_stats` | Burndown and progress stats |
 
 ### Epics
@@ -122,6 +126,15 @@ On startup the server logs in with your credentials and stores the JWT access to
 | `link_userstory_to_epic` | Link a user story to an epic |
 | `unlink_userstory_from_epic` | Remove the link |
 
+### Roles
+| Tool | Description |
+|---|---|
+| `list_roles` | List all roles in a project (needed for story points) |
+| `get_role` | Get role details including permissions |
+| `create_role` | Create a new role in a project |
+| `update_role` | Update role name, order, or permissions |
+| `delete_role` | Delete a role from a project |
+
 ### Members & Lookups
 | Tool | Description |
 |---|---|
@@ -133,7 +146,6 @@ On startup the server logs in with your credentials and stores the JWT access to
 | `list_priorities` | Priority IDs |
 | `list_severities` | Severity IDs |
 | `list_issue_types` | Issue type IDs |
-| `list_roles` | Role IDs (for story points) |
 | `list_tags` | Tags with colors |
 
 ### Comments & History
