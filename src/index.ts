@@ -13,6 +13,9 @@ import { lookupsTools } from "./tools/lookups.js";
 import { commentsTools } from "./tools/comments.js";
 import { epicsTools } from "./tools/epics.js";
 import { searchTools } from "./tools/search.js";
+import { wikiTools } from "./tools/wiki.js";
+import { rolesTools } from "./tools/roles.js";
+import { deletesTools } from "./tools/deletes.js";
 
 const config = loadConfig();
 const client = new TaigaClient(config);
@@ -33,6 +36,9 @@ const allTools = [
   ...commentsTools(client),
   ...epicsTools(client),
   ...searchTools(client),
+  ...wikiTools(client),
+  ...rolesTools(client),
+  ...deletesTools(client),
 ];
 
 for (const tool of allTools) {

@@ -1,0 +1,65 @@
+import { z } from "zod";
+import type { TaigaClient } from "../client.js";
+
+export const rolesTools = (client: TaigaClient) => [
+  {
+    name: "list_roles",
+    description: "List all roles defined in a Taiga project (needed for assigning story points per role)",
+    inputSchema: z.object({
+      project_id: z.number().describe("Project numeric ID"),
+    }),
+    handler: async ({ project_id }: { project_id: number }) => {
+      const roles = await client.get<TaigaRole[]>(`/roles?project=${project_id}`);
+      return roles.map((r) => ({
+        id: r.id,
+        name: r.name,
+        order: r.order,
+        computable: r.computable,
+        permissions: r.permissions,
+      }));
+    },
+  },
+  {
+    name: "list_tags",
+    description: "List all tags used in a Taiga project with their colors",
+    inputSchema: z.object({
+      project_id: z.number().describe("Project numeric ID"),
+    }),
+    handler: async ({ project_id }: { project_id: number }) => {
+      const tagsColors = await client.get<Record<string, string>>(`/projects/${project_id}/tags_colors`);
+      return Object.entries(tagsColors).map(([name, color]) => ({ name, color }));
+    },
+  },
+  {
+    name: "get_milestone_stats",
+    description: "Get progress statistics for a sprint/milestone (points done, remaining, burndown data)",
+    inputSchema: z.object({
+      milestone_id: z.number().describe("Milestone/sprint numeric ID"),
+    }),
+    handler: async ({ milestone_id }: { milestone_id: number }) => {
+      return client.get<TaigaMilestoneStats>(`/milestones/${milestone_id}/stats`);
+    },
+  },
+];
+
+interface TaigaRole {
+  id: number;
+  name: string;
+  order: number;
+  computable: boolean;
+  permissions: string[];
+}
+
+interface TaigaMilestoneStats {
+  name: string;
+  estimated_start: string;
+  estimated_finish: string;
+  total_points: Record<string, number>;
+  completed_points: Record<string, number> | number[];
+  total_userstories: number;
+  completed_userstories: number;
+  total_tasks: number;
+  completed_tasks: number;
+  iocaine_doses: number;
+  days: { day: string; name: number; open_points: number; optimal_points: number }[];
+}
