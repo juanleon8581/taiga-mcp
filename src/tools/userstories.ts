@@ -3,6 +3,31 @@ import type { TaigaClient } from "../client.js";
 
 export const userstoriesTools = (client: TaigaClient) => [
   {
+    name: "bulk_create_userstories",
+    description: "Create multiple user stories at once from a list of subjects (one per line)",
+    inputSchema: z.object({
+      project_id: z.number().describe("Project numeric ID"),
+      subjects: z.array(z.string()).describe("List of user story subjects/titles to create"),
+      status_id: z.number().optional().describe("Status ID to assign to all created stories"),
+      milestone_id: z.number().optional().describe("Sprint/milestone ID to assign to all stories"),
+    }),
+    handler: async ({ project_id, subjects, status_id, milestone_id }: {
+      project_id: number;
+      subjects: string[];
+      status_id?: number;
+      milestone_id?: number;
+    }) => {
+      const body: Record<string, unknown> = {
+        project_id,
+        bulk_stories: subjects.join("\n"),
+      };
+      if (status_id) body.status_id = status_id;
+      if (milestone_id) body.milestone_id = milestone_id;
+      const stories = await client.post<TaigaUS[]>("/userstories/bulk_create", body);
+      return stories.map(formatUS);
+    },
+  },
+  {
     name: "list_userstories",
     description: "List user stories in a Taiga project, optionally filtered by milestone",
     inputSchema: z.object({

@@ -10,6 +10,9 @@ import { tasksTools } from "./tools/tasks.js";
 import { milestonesTools } from "./tools/milestones.js";
 import { membersTools } from "./tools/members.js";
 import { lookupsTools } from "./tools/lookups.js";
+import { commentsTools } from "./tools/comments.js";
+import { epicsTools } from "./tools/epics.js";
+import { searchTools } from "./tools/search.js";
 
 const config = loadConfig();
 const client = new TaigaClient(config);
@@ -27,6 +30,9 @@ const allTools = [
   ...milestonesTools(client),
   ...membersTools(client),
   ...lookupsTools(client),
+  ...commentsTools(client),
+  ...epicsTools(client),
+  ...searchTools(client),
 ];
 
 for (const tool of allTools) {
