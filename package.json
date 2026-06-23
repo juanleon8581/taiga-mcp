@@ -2,13 +2,19 @@
   "name": "taiga-mcp",
   "version": "0.1.0",
   "description": "MCP server for Taiga project management API",
+  "keywords": ["mcp", "taiga", "project-management", "claude", "ai"],
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
     "taiga-mcp": "dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run build",
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
     "inspector": "npx @modelcontextprotocol/inspector node dist/index.js"
