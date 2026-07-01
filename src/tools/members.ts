@@ -34,6 +34,35 @@ export const membersTools = (client: TaigaClient) => [
       }));
     },
   },
+  {
+    name: "add_member",
+    description: "Add a user to a Taiga project by email. Optionally specify a role_id; defaults to the first role in the project.",
+    inputSchema: z.object({
+      project_id: z.number().describe("Project numeric ID"),
+      email: z.string().email().describe("Email of the user to add"),
+      role_id: z.number().optional().describe("Role ID to assign (defaults to first project role)"),
+    }),
+    handler: async ({ project_id, email, role_id }: { project_id: number; email: string; role_id?: number }) => {
+      let resolvedRoleId = role_id;
+      if (!resolvedRoleId) {
+        const roles = await client.get<TaigaRole[]>(`/roles?project=${project_id}`);
+        if (!roles.length) throw new Error("No roles found for project");
+        resolvedRoleId = roles[0].id;
+      }
+      const membership = await client.post<TaigaMembership>("/memberships", {
+        project: project_id,
+        role: resolvedRoleId,
+        username: email,
+      });
+      return {
+        user_id: membership.user,
+        full_name: membership.full_name,
+        email: membership.email,
+        role: membership.role_name,
+        is_active: membership.is_user_active,
+      };
+    },
+  },
 ];
 
 interface TaigaUser {
@@ -50,4 +79,9 @@ interface TaigaMembership {
   email: string;
   role_name: string;
   is_user_active: boolean;
+}
+
+interface TaigaRole {
+  id: number;
+  name: string;
 }

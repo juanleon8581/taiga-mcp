@@ -140,6 +140,7 @@ On startup the server logs in with your credentials and stores the JWT access to
 |---|---|
 | `get_me` | Get the authenticated user |
 | `list_members` | List project members with user IDs |
+| `add_member` | Add a user to a project by email (role defaults to first project role) |
 | `list_issue_statuses` | Issue status IDs for a project |
 | `list_userstory_statuses` | User story status IDs |
 | `list_task_statuses` | Task status IDs |

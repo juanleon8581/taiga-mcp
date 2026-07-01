@@ -16,6 +16,7 @@ import { searchTools } from "./tools/search.js";
 import { wikiTools } from "./tools/wiki.js";
 import { rolesTools } from "./tools/roles.js";
 import { deletesTools } from "./tools/deletes.js";
+import { usersTools } from "./tools/users.js";
 
 const config = loadConfig();
 const client = new TaigaClient(config);
@@ -39,6 +40,7 @@ const allTools = [
   ...wikiTools(client),
   ...rolesTools(client),
   ...deletesTools(client),
+  ...usersTools(client),
 ];
 
 for (const tool of allTools) {
