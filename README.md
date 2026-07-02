@@ -10,27 +10,15 @@ MCP server for the [Taiga](https://taiga.io) project management API. Lets AI ass
 
 ## Installation
 
-### Option A — via npx (recommended)
-
-No cloning or building required. Run once:
+### Option A — from source (recommended)
 
 ```bash
-claude mcp add taiga -s user \
-  -e TAIGA_URL=https://your-taiga-instance.com \
-  -e TAIGA_USERNAME=your_username \
-  -e TAIGA_PASSWORD=your_password \
-  -- npx -y taiga-mcp
-```
-
-### Option B — from source
-
-```bash
-git clone https://github.com/YOUR_USER/taiga-mcp
+git clone https://github.com/juanleon8581/taiga-mcp
 cd taiga-mcp
 npm install && npm run build
 ```
 
-Then register with Claude Code:
+Register with Claude Code:
 
 ```bash
 claude mcp add taiga -s user \
@@ -40,16 +28,16 @@ claude mcp add taiga -s user \
   -- node /absolute/path/to/taiga-mcp/dist/index.js
 ```
 
-### Claude Desktop
+### Option B — Claude Desktop
 
-Add to `claude_desktop_config.json`:
+Clone and build as above, then add to `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "taiga": {
-      "command": "npx",
-      "args": ["-y", "taiga-mcp"],
+      "command": "node",
+      "args": ["/absolute/path/to/taiga-mcp/dist/index.js"],
       "env": {
         "TAIGA_URL": "https://your-taiga-instance.com",
         "TAIGA_USERNAME": "your_username",
@@ -185,11 +173,7 @@ claude mcp list
 # taiga: node ... - ✔ Connected
 ```
 
-## Update (npx install)
-
-npx always pulls the latest published version. No action needed.
-
-## Update (source install)
+## Update
 
 ```bash
 cd taiga-mcp
