@@ -69,6 +69,18 @@ export const tasksTools = (client: TaigaClient) => [
       return formatTask(await client.patch<TaigaTask>(`/tasks/${task_id}`, fields));
     },
   },
+  {
+    name: "move_task",
+    description: "Move a task to a different user story (or unassign it from any user story)",
+    inputSchema: z.object({
+      task_id: z.number().describe("Task numeric ID"),
+      version: z.number().describe("Current version for optimistic locking"),
+      userstory_id: z.number().nullable().describe("Target user story ID, or null to unassign"),
+    }),
+    handler: async ({ task_id, version, userstory_id }: { task_id: number; version: number; userstory_id: number | null }) => {
+      return formatTask(await client.patch<TaigaTask>(`/tasks/${task_id}`, { version, user_story: userstory_id }));
+    },
+  },
 ];
 
 function formatTask(t: TaigaTask) {
