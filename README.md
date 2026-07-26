@@ -93,6 +93,7 @@ On startup the server logs in with your credentials and stores the JWT access to
 | `list_tasks` | List tasks, filter by US or sprint |
 | `create_task` | Create a task |
 | `update_task` | Update a task |
+| `move_task` | Move a task to a different user story (or unassign it) |
 
 ### Milestones / Sprints
 | Tool | Description |
