@@ -158,6 +158,12 @@ On startup the server logs in with your credentials and stores the JWT access to
 | `update_wiki_page` | Update a wiki page |
 | `delete_wiki_page` | Delete a wiki page |
 
+### Attachments
+| Tool | Description |
+|---|---|
+| `list_attachments` | List attachments on an issue, US, task, epic, or wiki page |
+| `download_attachment` | Download an attachment's file to local disk |
+
 ### Delete
 | Tool | Description |
 |---|---|

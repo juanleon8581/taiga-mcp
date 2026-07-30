@@ -74,4 +74,21 @@ export class TaigaClient {
   post<T>(path: string, body: unknown): Promise<T> { return this.request("POST", path, body); }
   patch<T>(path: string, body: unknown): Promise<T> { return this.request("PATCH", path, body); }
   delete(path: string): Promise<void> { return this.request("DELETE", path); }
+
+  async downloadFile(url: string): Promise<Buffer> {
+    if (!this.token) await this.login();
+
+    let res = await this.fetchBinary(url);
+    if (res.status === 401) {
+      const refreshed = await this.refresh();
+      if (!refreshed) await this.login();
+      res = await this.fetchBinary(url);
+    }
+    if (!res.ok) throw new Error(`GET ${url} failed: ${res.status} ${await res.text()}`);
+    return Buffer.from(await res.arrayBuffer());
+  }
+
+  private fetchBinary(url: string): Promise<Response> {
+    return fetch(url, { headers: { Authorization: `Bearer ${this.token}` } });
+  }
 }
