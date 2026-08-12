@@ -1,8 +1,14 @@
 {
   "name": "taiga-mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "MCP server for Taiga project management API",
-  "keywords": ["mcp", "taiga", "project-management", "claude", "ai"],
+  "keywords": [
+    "mcp",
+    "taiga",
+    "project-management",
+    "claude",
+    "ai"
+  ],
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
