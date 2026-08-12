@@ -26,6 +26,16 @@ export const tasksTools = (client: TaigaClient) => [
     },
   },
   {
+    name: "get_task",
+    description: "Get a specific task by ID, including full description",
+    inputSchema: z.object({
+      task_id: z.number().describe("Task numeric ID"),
+    }),
+    handler: async ({ task_id }: { task_id: number }) => {
+      return formatTask(await client.get<TaigaTask>(`/tasks/${task_id}`));
+    },
+  },
+  {
     name: "create_task",
     description: "Create a new task in a Taiga project",
     inputSchema: z.object({
