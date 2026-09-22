@@ -159,6 +159,13 @@ On startup the server logs in with your credentials and stores the JWT access to
 | `update_wiki_page` | Update a wiki page |
 | `delete_wiki_page` | Delete a wiki page |
 
+### Custom Attributes
+| Tool | Description |
+|---|---|
+| `list_custom_attributes` | List custom attribute definitions for a project (task, user story, issue, or epic) |
+| `get_custom_attributes_values` | Read current custom attribute values of a task/US/issue/epic, joined with their definitions |
+| `update_custom_attribute_value` | Set a single custom attribute value, by attribute name or ID |
+
 ### Attachments
 | Tool | Description |
 |---|---|

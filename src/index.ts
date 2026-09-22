@@ -19,6 +19,7 @@ import { deletesTools } from "./tools/deletes.js";
 import { usersTools } from "./tools/users.js";
 import { webhooksTools } from "./tools/webhooks.js";
 import { attachmentsTools } from "./tools/attachments.js";
+import { customAttributesTools } from "./tools/custom-attributes.js";
 
 const config = loadConfig();
 const client = new TaigaClient(config);
@@ -45,6 +46,7 @@ const allTools = [
   ...usersTools(client),
   ...webhooksTools(client),
   ...attachmentsTools(client),
+  ...customAttributesTools(client),
 ];
 
 for (const tool of allTools) {
