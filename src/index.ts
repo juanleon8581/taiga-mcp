@@ -26,7 +26,7 @@ const client = new TaigaClient(config);
 
 const server = new McpServer({
   name: "taiga-mcp",
-  version: "0.2.0",
+  version: "0.3.0",
 });
 
 const allTools = [
