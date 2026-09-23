@@ -19,13 +19,14 @@ import { deletesTools } from "./tools/deletes.js";
 import { usersTools } from "./tools/users.js";
 import { webhooksTools } from "./tools/webhooks.js";
 import { attachmentsTools } from "./tools/attachments.js";
+import { customAttributesTools } from "./tools/custom-attributes.js";
 
 const config = loadConfig();
 const client = new TaigaClient(config);
 
 const server = new McpServer({
   name: "taiga-mcp",
-  version: "0.2.0",
+  version: "0.3.0",
 });
 
 const allTools = [
@@ -45,6 +46,7 @@ const allTools = [
   ...usersTools(client),
   ...webhooksTools(client),
   ...attachmentsTools(client),
+  ...customAttributesTools(client),
 ];
 
 for (const tool of allTools) {
