@@ -170,6 +170,7 @@ On startup the server logs in with your credentials and stores the JWT access to
 | Tool | Description |
 |---|---|
 | `list_attachments` | List attachments on an issue, US, task, epic, or wiki page |
+| `upload_attachment` | Attach a local file to an issue, US, task, epic, or wiki page |
 | `download_attachment` | Download an attachment's file to local disk |
 
 ### Delete
