@@ -88,6 +88,28 @@ export class TaigaClient {
     return Buffer.from(await res.arrayBuffer());
   }
 
+  async uploadFile<T>(path: string, form: FormData): Promise<T> {
+    if (!this.token) await this.login();
+
+    let res = await this.fetchMultipart(path, form);
+    if (res.status === 401) {
+      const refreshed = await this.refresh();
+      if (!refreshed) await this.login();
+      res = await this.fetchMultipart(path, form);
+    }
+    if (!res.ok) throw new Error(`POST ${path} failed: ${res.status} ${await res.text()}`);
+    return res.json() as Promise<T>;
+  }
+
+  private fetchMultipart(path: string, form: FormData): Promise<Response> {
+    // No Content-Type header: fetch sets the multipart boundary itself.
+    return fetch(`${this.baseUrl}${path}`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${this.token}` },
+      body: form,
+    });
+  }
+
   private fetchBinary(url: string): Promise<Response> {
     return fetch(url, { headers: { Authorization: `Bearer ${this.token}` } });
   }

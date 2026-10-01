@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import type { TaigaClient } from "../client.js";
 
 const OBJECT_TYPE = z.enum(["issue", "userstory", "task", "epic", "wikipage"]);
@@ -53,6 +53,40 @@ export const attachmentsTools = (client: TaigaClient) => [
         description: a.description || null,
         created_date: a.created_date,
       }));
+    },
+  },
+  {
+    name: "upload_attachment",
+    description: "Attach a local file to a Taiga issue, user story, task, epic, or wiki page",
+    inputSchema: z.object({
+      object_type: OBJECT_TYPE.describe("Type of object to attach the file to"),
+      object_id: z.number().describe("Numeric ID of the object (issue, user story, task, epic, or wiki page)"),
+      project_id: z.number().describe("Numeric ID of the project"),
+      file_path: z.string().describe("Absolute path of the local file to upload"),
+      description: z.string().optional().describe("Optional description of the attachment"),
+    }),
+    handler: async ({ object_type, object_id, project_id, file_path, description }: {
+      object_type: ObjectType;
+      object_id: number;
+      project_id: number;
+      file_path: string;
+      description?: string;
+    }) => {
+      const endpoint = ENDPOINT_MAP[object_type];
+      const content = await readFile(file_path);
+      const form = new FormData();
+      form.append("project", String(project_id));
+      form.append("object_id", String(object_id));
+      if (description) form.append("description", description);
+      form.append("attached_file", new Blob([content]), basename(file_path));
+      const a = await client.uploadFile<TaigaAttachment>(`/${endpoint}/attachments`, form);
+      return {
+        id: a.id,
+        name: a.name,
+        size: a.size,
+        description: a.description || null,
+        created_date: a.created_date,
+      };
     },
   },
   {
